@@ -1,0 +1,46 @@
+---
+
+### 📄 .gitignore (Python + PyTorch + Notebooks + data)
+
+```gitignore
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+.venv/
+env/
+venv/
+ENV/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# PyTorch / training artifacts
+*.pt
+*.pth
+*.ckpt
+
+# Datasets (large files)
+data/
+
+# Logs and outputs
+*.log
+*.out
+*.err
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# Build
+dist/
+build/
+*.egg-info/
