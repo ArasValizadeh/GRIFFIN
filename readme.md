@@ -12,6 +12,7 @@ By combining these mechanisms, GRIFFIN provides a robust and interpretable alter
 
 ## 📂 Project Structure
 
+```` 
 GRIFFIN/
 ├── model/                  # Core model definitions
 │   └── griffin.py          
@@ -26,21 +27,26 @@ GRIFFIN/
 └── .gitignore
                             # Datasets (excluded from repo)
 
+````
+
 ## 🚀 Installation
 
 1. Clone this repository:
    ```bash
    git clone https://github.com/your-username/GRIFFIN.git
    cd GRIFFIN
+   ```
 
 2.	Create and activate a virtual environment:
-    python -m venv .venv
+    ```bash
+	python -m venv .venv
     source .venv/bin/activate   # on Linux/Mac
     .venv\Scripts\activate      # on Windows
-
+	```
 3.	Install dependencies:
-    pip install -r requirements.txt
-
+    ```bash
+  	pip install -r requirements.txt
+    ```
 ## 📁 Data
 
 Datasets are expected in a data/ directory at the project root.
