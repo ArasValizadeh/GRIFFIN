@@ -11,20 +11,20 @@ By combining these mechanisms, GRIFFIN provides a robust and interpretable alter
 
 
 ## 📂 Project Structure
+
 GRIFFIN/
-├── GRIFFIN/
-│   ├── model/                # Core model implementation
-│   │   └── griffin.py
-│   ├── train/                # Training utilities
-│   │   ├── early_stop.py
-│   │   └── classification_test.py
-│   ├── tests/                # Unit tests
-│   │   ├── class_test.py
-│   │   ├── uci_test.py
-│   │   └── init.py
-│   └── notebooks/            # Experiment notebooks
-│       └── test_class.ipynb
-└── data/                     # Datasets (excluded from repo)
+├── model/                  # Core model definitions
+│   └── griffin.py          
+├── train/                  # Simple training / evaluation scripts
+│   ├── classification_test.py
+│   └── early_stop.py
+├── tests/                  # Dataset wrappers + quick tests
+│   ├── uci_test.py         # UCI data-set helpers
+│   └── class_test.py       # Digits / Segmentation helpers
+├── notebooks/              # Jupyter demo (no heavy dependencies beyond the requirements file)
+├── requirements.txt
+└── .gitignore
+                            # Datasets (excluded from repo)
 
 ## 🚀 Installation
 
@@ -41,17 +41,13 @@ GRIFFIN/
 3.	Install dependencies:
     pip install -r requirements.txt
 
-📁 Data
+## 📁 Data
 
 Datasets are expected in a data/ directory at the project root.
 This folder is not included in the repository due to size.
 Place your datasets there before running training/testing.
 
-🧪 Tests
+## 🧪 Tests
 
 Unit tests are located in GRIFFIN/tests/.
 They include both classification and UCI dataset examples.
-
-📜 License
-
-MIT License – feel free to use and adapt.
