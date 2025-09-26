@@ -2,10 +2,12 @@
 
 GRIFFIN is a PyTorch-based neuro-fuzzy inference system designed specifically for classification tasks.
 It builds upon the UNFIS framework but introduces several key enhancements:
+```` 
 	•	Feature Selection – automatically learns which input features are most relevant.
 	•	Relaxation Mechanism – smooths rule activations for improved generalization.
 	•	Literal Modulation – adds flexibility in handling fuzzy membership functions.
 	•	Correlation-Aware Design – captures dependencies among input features for more expressive rules.
+```` 
 
 By combining these mechanisms, GRIFFIN provides a robust and interpretable alternative to black-box neural models in classification problems.
 
