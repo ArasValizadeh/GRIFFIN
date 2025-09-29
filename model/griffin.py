@@ -134,6 +134,63 @@ class GRIFFIN(nn.Module):
         self.mean = nn.Parameter(mean)
         self.std = nn.Parameter(std)
 
+        
+    def _init_fexmax(self, X_train: np.ndarray, threshold: float = 1e-6, max_iter: int = 50):
+        """
+        Initialize fuzzy rules using FExMax clustering (Fuzzy Explanation Maximization).
+        Inspired by Maximum Likelihood Estimation and Expectation Maximization.
+        
+        Args:
+            X_train (np.ndarray): Training data (N x d).
+            threshold (float): Variance threshold for pruning weak components.
+            max_iter (int): Maximum number of iterations for convergence.
+        """
+        X = torch.from_numpy(X_train).float().to(self.device)
+
+        N, d = X.shape
+        R = self.rules_count
+
+        # Random initialization
+        M = torch.rand((R, d), device=self.device)   # centers
+        Gamma = torch.eye(d, device=self.device).unsqueeze(0).repeat(R, 1, 1)  # eigvecs
+        Delta = torch.eye(d, device=self.device).unsqueeze(0).repeat(R, 1, 1)  # eigvals diag
+
+        for it in range(max_iter):
+            # Compute membership μ (Eq. 46/53)
+            mu = []
+            for i in range(R):
+                diff = X - M[i]
+                Q_inv = torch.inverse(Gamma[i] @ Delta[i] @ Gamma[i].T + 1e-6*torch.eye(d, device=self.device))
+                exponent = -0.5 * torch.sum(diff @ Q_inv * diff, dim=1)
+                mu.append(torch.exp(exponent))
+            mu = torch.stack(mu, dim=1)  # N x R
+
+            # Normalize memberships
+            mu = mu / (mu.sum(dim=1, keepdim=True) + 1e-12)
+
+            # Update centers Mᶦ (Eq. 55)
+            for i in range(R):
+                weights = mu[:, i].unsqueeze(1)
+                M[i] = (weights * X).sum(dim=0) / (weights.sum() + 1e-12)
+
+                # Update covariance Qᶦ
+                diff = X - M[i]
+                cov = (weights * diff).T @ diff / (weights.sum() + 1e-12)
+
+                eigvals, eigvecs = torch.linalg.eigh(cov)
+                # Prune small variances
+                mask = eigvals > threshold
+                eigvals = eigvals[mask]
+                eigvecs = eigvecs[:, mask]
+
+                # Rebuild Γᶦ and Δᶦ
+                Gamma[i] = eigvecs
+                Delta[i] = torch.diag(eigvals)
+
+        # Save parameters
+        self.mean = nn.Parameter(M.unsqueeze(0))  # 1, R, d
+        self.V = nn.Parameter(Gamma.unsqueeze(0)) # 1, R, d, r
+        self.std = nn.Parameter(torch.stack([torch.diag(Delta[i]) for i in range(R)]).unsqueeze(0)) # 1,R,r
 class SklearnGRIFFINrapper(BaseEstimator, ClassifierMixin):
     def __init__(self, model, device=None, dtype=torch.float32):
         self.device = device if device else 'cpu'
