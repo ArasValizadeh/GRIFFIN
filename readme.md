@@ -1,3 +1,5 @@
+![Alt griffin](./griffin.jpg)
+
 # GRIFFIN
 
 GRIFFIN is a PyTorch-based neuro-fuzzy inference system designed specifically for classification tasks.
